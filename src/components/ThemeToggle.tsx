@@ -6,20 +6,16 @@ const THEME_KEY = "todo-theme";
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<"light" | "dark" | null>(null);
+
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(THEME_KEY) as "light" | "dark" | null;
-      if (saved) {
-        setTheme(saved);
-        document.documentElement.classList.toggle("dark", saved === "dark");
-        return;
-      }
-      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const saved = localStorage.getItem(THEME_KEY) as "light" | "dark" | null;
+    if (saved) {
+      setTheme(saved);
+    } else {
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
       setTheme(prefersDark ? "dark" : "light");
-      document.documentElement.classList.toggle("dark", prefersDark);
-    } catch (e) {
-        console.log(e)
-      setTheme("light");
     }
   }, []);
 
@@ -31,6 +27,8 @@ export default function ThemeToggle() {
     } catch {}
     document.documentElement.classList.toggle("dark", next === "dark");
   }
+
+  if (!theme) return null; // avoid flashing "wrong" label
 
   return (
     <button
