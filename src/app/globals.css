@@ -1,26 +1,44 @@
-@import "tailwindcss";
+ @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+ @theme {
+   --color-bg: 255 255 255;
+   --color-fg: 23 23 23;
+   --color-muted: 100 116 139;
+   --color-accent: 59 130 246;
+   --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
+   --font-mono: var(--font-geist-mono, ui-monospace, monospace);
+ }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+ .dark {
+   --color-bg: 10 10 10;
+   --color-fg: 237 237 237;
+   --color-muted: 148 163 184;
+   --color-accent: 96 165 250;
+ }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+ html,
+ body {
+   height: 100%;
+ }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+ body {
+   background-color: rgb(var(--color-bg));
+   color: rgb(var(--color-fg));
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   transition: background-color 200ms ease, color 200ms ease;
+   font-family: var(--font-sans);
+ }
+
+ .container {
+   max-width: 900px;
+   margin-inline: auto;
+   padding-inline: 1rem;
+ }
+
+ .card {
+   background: linear-gradient(rgba(var(--color-bg), 0.02), rgba(var(--color-bg), 0.02));
+   border: 1px solid rgba(var(--color-muted), 0.10);
+   border-radius: 0.75rem;
+   padding: 1rem;
+ }
