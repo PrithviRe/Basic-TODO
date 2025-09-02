@@ -1,12 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TaskInput from "@/components/TaskInput";
 import TaskList from "@/components/TaskList";
 import { Task } from "@/types/task";
 
+const STORAGE_KEY = "todo-tasks";
+
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed: Task[] = JSON.parse(raw);
+        setTasks(parsed);
+      }
+    } catch (err) {
+      console.error("Failed to load tasks", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    } catch (err) {
+      console.error("Failed to save tasks", err);
+    }
+  }, [tasks]);
 
   function addTask(text: string) {
     const newTask: Task = {
@@ -20,9 +42,7 @@ export default function Home() {
 
   function toggleTask(id: string) {
     setTasks((prev) =>
-      prev.map((t) =>
-        t.id === id ? { ...t, completed: !t.completed } : t
-      )
+      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
     );
   }
 
